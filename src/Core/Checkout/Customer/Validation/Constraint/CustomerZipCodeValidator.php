@@ -38,14 +38,12 @@ class CustomerZipCodeValidator extends ConstraintValidator
 
         $country = $this->getCountry($constraint->countryId);
 
-        if ($country->getPostalCodeRequired()) {
-            if ($value === null || $value === '') {
-                $this->context->buildViolation($constraint->getMessageRequired())
-                    ->setCode(NotBlank::IS_BLANK_ERROR)
-                    ->addViolation();
+        if ($country->getPostalCodeRequired() && $value === null || $value === '') {
+            $this->context->buildViolation($constraint->getMessageRequired())
+                ->setCode(NotBlank::IS_BLANK_ERROR)
+                ->addViolation();
 
-                return;
-            }
+            return;
         }
 
         if (!$country->getCheckPostalCodePattern() && !$country->getCheckAdvancedPostalCodePattern()) {
